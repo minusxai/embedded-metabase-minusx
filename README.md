@@ -1,6 +1,14 @@
-## Metabase Interactive Embedding Example
+## Embedded Metabase + MinusX Example
 
-Refer the README_OLD.md for all the old readme steps.
+This repo demonstrates how to add MinusX support to an application that embeds Metabase dashboards and questions. The proxy server handles injecting the MinusX js and custom css into the Metabase iFrame. With that, MinusX just works exactly like it does in the browser extension.
+
+## Components / Architecture
+
+- **server.js** (port 9090): Main application (this would be your application) server handling authentication and UI
+- **proxy.js** (port 9091): Proxy server for Metabase instance and asset serving
+- **Authentication**: Automatic SSO authentication using JWT tokens
+- **Custom Assets**: Local CSS and other assets served through proxy
+
 
 ### Install dependencies
 
@@ -46,13 +54,6 @@ The current `custom.css` includes CSS variables for a custom color palette:
   /* ... more color variables ... */
 }
 ```
-
-## Architecture
-
-- **server.js** (port 9090): Main application server handling authentication and UI
-- **proxy.js** (port 9091): Proxy server for Metabase instance and asset serving
-- **Authentication**: Automatic SSO authentication using JWT tokens
-- **Custom Assets**: Local CSS and other assets served through proxy
 
 ## Starting the app
 
