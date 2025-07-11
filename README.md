@@ -2,6 +2,9 @@
 
 This repo demonstrates how to add MinusX support to an application that embeds Metabase dashboards and questions. The proxy server handles injecting the MinusX js and custom css into the Metabase iFrame. With that, MinusX just works exactly like it does in the browser extension.
 
+![app.png](./imgs/app.png)
+![app2.png](./imgs/app2.png)
+
 ## Components / Architecture
 
 - **server.js** (port 9090): Main application (this would be your application) server handling authentication and UI
