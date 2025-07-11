@@ -1,0 +1,27 @@
+{
+  "name": "metabase-nodejs-express-interactive-embedding-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon server.js",
+    "proxy": "nodemon proxy.js",
+    "proxy-dev": "NODE_ENV=DEV nodemon proxy.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "dotenv": "^17.2.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "http-proxy-middleware": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
+    "path": "^0.12.7",
+    "pbkdf2-password": "^1.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
