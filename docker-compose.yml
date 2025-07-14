@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  server:
+    build: .
+    ports:
+      - "9090:9090"
+    environment:
+      - NODE_ENV=production
+      - PORT=9090
+      - PROXY_URL=${PROXY_URL}
+      - METABASE_JWT_SHARED_SECRET=${METABASE_JWT_SHARED_SECRET}
+      - METABASE_DASHBOARD_PATH=${METABASE_DASHBOARD_PATH}
+      - METABASE_EDITOR_PATH=${METABASE_EDITOR_PATH}
+    depends_on:
+      - proxy
+
+  proxy:
+    build: 
+      context: .
+      dockerfile: Dockerfile.proxy
+    ports:
+      - "9091:9091"
+    environment:
+      - NODE_ENV=production
+      - TARGET=${TARGET}
+      - EXTENSION_TARGET=${EXTENSION_TARGET}

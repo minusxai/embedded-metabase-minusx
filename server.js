@@ -5,7 +5,7 @@ const express = require("express");
 const session = require("express-session");
 const jwt = require("jsonwebtoken");
 
-const METABASE_SITE_URL = "http://localhost:9091";
+const METABASE_SITE_URL = process.env.PROXY_URL || "http://localhost:9091";
 const METABASE_JWT_SHARED_SECRET = process.env.METABASE_JWT_SHARED_SECRET;
 const METABASE_DASHBOARD_PATH = process.env.METABASE_DASHBOARD_PATH || "/dashboard/1-e-commerce-insights";
 const METABASE_EDITOR_PATH = process.env.METABASE_EDITOR_PATH || "/question/139-demo-mbql/notebook";
