@@ -6,7 +6,7 @@
   "scripts": {
     "server": "nodemon server.js",
     "proxy": "nodemon proxy.js",
-    "proxy-dev": "NODE_ENV=DEV nodemon proxy.js"
+    "proxy-mxdev": "NODE_ENV=MX_DEV nodemon proxy.js"
   },
   "author": "",
   "license": "ISC",

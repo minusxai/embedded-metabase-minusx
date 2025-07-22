@@ -72,4 +72,12 @@ Start the proxy server
 npm run proxy
 ```
 
+## Development Mode
+
+Start the proxy server in MX dev mode to run minusx locally. You'll need a minusx repo in the parent folder and running in dev mode for this to work.
+
+```sh
+npm run proxy-mxdev
+```
+
 Visit [http://localhost:9090](http://localhost:9090)

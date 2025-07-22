@@ -1,14 +1,17 @@
 require('dotenv').config();
 const express = require('express');
 const { createProxyMiddleware, responseInterceptor } = require('http-proxy-middleware');
+const path = require('path');
 
 const app = express();
 app.set('trust proxy', 1);
 const TARGET = process.env.TARGET || 'https://minusx.metabaseapp.com';
 const EXTENSION_TARGET = process.env.EXTENSION_TARGET || 'https://web.minusxapi.com/extension-build';
+const MX_DEV_MODE = process.env.NODE_ENV === 'MX_DEV';
+const MX_DEV_BUILD_PATH = '../minusx/extension/build';
 
 
-// Proxy bundle files and assets from web.minusxapi.com or serve from filesystem in DEV mode
+// Proxy bundle files and assets from web.minusxapi.com or serve from filesystem in MX_DEV mode
 const rewriteUrls = [
   '/contentScript.bundle.js',
   '/content.styles.css',
@@ -16,12 +19,21 @@ const rewriteUrls = [
   '/metabase.bundle.js',
 ]
 
-for (const url of rewriteUrls) {
-  app.use(createProxyMiddleware({
-    target: EXTENSION_TARGET,
-    changeOrigin: true,
-    pathFilter: url,
-  }));
+if (MX_DEV_MODE) {
+  console.log('🔧 MX_DEV MODE: Serving files from filesystem at', MX_DEV_BUILD_PATH);
+  for (const url of rewriteUrls) {
+    const fullPath = path.resolve(__dirname, MX_DEV_BUILD_PATH, url.slice(1));
+    app.use(url, express.static(fullPath));
+  }
+} else {
+  console.log('🔧 PROD MODE: Proxying requests to', EXTENSION_TARGET);
+  for (const url of rewriteUrls) {
+    app.use(createProxyMiddleware({
+      target: EXTENSION_TARGET,
+      changeOrigin: true,
+      pathFilter: url,
+    }));
+  }
 }
 
 // Serve custom.css for /minusx.css requests
@@ -57,10 +69,17 @@ app.use('/', createProxyMiddleware({
               if (!sources.includes('https://web.minusxapi.com')) {
                 sources.push('https://web.minusxapi.com');
               }
+              if (MX_DEV_MODE && !sources.includes('http://localhost:3005')) {
+                sources.push('http://localhost:3005');
+              }
               return `frame-src ${sources.join(' ')}`;
             });
           } else {
-            csp += `; frame-src https://web.minusxapi.com`;
+            if (MX_DEV_MODE) {
+              csp += `; frame-src https://web.minusxapi.com http://localhost:3005`;
+            } else {
+              csp += `; frame-src https://web.minusxapi.com`;
+            }
           }
 
           // 🔥 Important: apply to final response
