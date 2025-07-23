@@ -49,10 +49,10 @@ app.use('/', createProxyMiddleware({
    proxyRes: responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
       // Handle JWT cookie setting for /auth/sso requests
       if (req.url.startsWith('/auth/sso')) {
-        const jwt = req.query.jwt;
-        if (jwt) {
+        const mx_jwt = req.query.mx_jwt;
+        if (mx_jwt) {
           console.log('🔐 Setting mx_jwt cookie for /auth/sso');
-          res.cookie('mx_jwt', jwt, {
+          res.cookie('mx_jwt', mx_jwt, {
             httpOnly: false,
             secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
             sameSite: 'lax'

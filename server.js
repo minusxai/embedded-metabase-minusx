@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const METABASE_SITE_URL = process.env.PROXY_URL || "http://localhost:9091";
 const METABASE_JWT_SHARED_SECRET = process.env.METABASE_JWT_SHARED_SECRET;
+const MX_JWT_SHARED_SECRET = process.env.MX_JWT_SHARED_SECRET;
 const METABASE_DASHBOARD_PATH = process.env.METABASE_DASHBOARD_PATH || "/dashboard/1-e-commerce-insights";
 const METABASE_EDITOR_PATH = process.env.METABASE_EDITOR_PATH || "/question/139-demo-mbql/notebook";
 const mods = "top_nav=false";
@@ -56,6 +57,18 @@ const signUserToken = (user) =>
     METABASE_JWT_SHARED_SECRET
   );
 
+// MX JWT token signing function
+const signMXToken = (username) =>
+  jwt.sign(
+    {
+      username,
+      exp: Math.round(Date.now() / 1000) + 60 * 10, // 10 minute expiration
+    },
+    MX_JWT_SHARED_SECRET
+  );
+
+
+
 app.get("/", function (req, res) {
     res.redirect("/analytics");
 });
@@ -74,9 +87,12 @@ app.get('/sso/metabase', (req, res) => {
   if (!req.session.user) {
     req.session.user = users[0]; // Use Rene as default user
   }
+  // Create username from email
+  const username = req.session.user.email.split('@')[0];
   
   const ssoUrl = new URL('/auth/sso', METABASE_SITE_URL);
   ssoUrl.searchParams.set('jwt', signUserToken(req.session.user));
+  ssoUrl.searchParams.set('mx_jwt', signMXToken(username));
   ssoUrl.searchParams.set('return_to', `${req.query.return_to ?? '/'}?${mods}`);
   
   res.redirect(ssoUrl);
