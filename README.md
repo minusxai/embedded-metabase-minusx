@@ -39,7 +39,7 @@ TARGET=https://your-metabase-instance.com
 EXTENSION_TARGET=https://web.minusxapi.com/extension-build
 ```
 
-**Note**: The `MX_JWT_SHARED_SECRET` is required for MinusX authentication. Contact MinusX at [http://minusx.ai/demo](http://minusx.ai/demo) to discuss embedded plans and retrieve this shared JWT token.
+**Note**: The `MX_JWT_SHARED_SECRET` is required for MinusX authentication. [Contact us](http://minusx.ai/demo) to discuss embedded plans and retrieve this shared JWT token.
 
 ### 3. Run Proxy Server
 Start the proxy server that handles:
