@@ -60,7 +60,7 @@ app.use('/', createProxyMiddleware({
           res.cookie('mx_jwt', mx_jwt, {
             httpOnly: false,
             secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
-            sameSite: 'lax'
+            sameSite: 'None'
           });
         }
       }
