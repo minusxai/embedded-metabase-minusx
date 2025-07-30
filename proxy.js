@@ -59,7 +59,7 @@ app.use('/', createProxyMiddleware({
           console.log('🔐 Setting mx_jwt cookie for /auth/sso');
           res.cookie('mx_jwt', mx_jwt, {
             httpOnly: false,
-            secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+            secure: true,
             sameSite: 'None'
           });
         }
