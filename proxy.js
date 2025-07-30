@@ -72,9 +72,23 @@ app.use('/', createProxyMiddleware({
         let response = responseBuffer.toString('utf8');
         console.log('🔧 Intercepting HTML response, done');
 
-        // Inject script
+        // Inject cookie-setting script for /auth/sso requests
+        let cookieScript = '';
+        if (req.url.startsWith('/auth/sso')) {
+          const mx_jwt = req.query.mx_jwt;
+          if (mx_jwt) {
+            console.log('🔐 Injecting client-side mx_jwt cookie script');
+            cookieScript = `
+    <script>
+      document.cookie = 'mx_jwt=${mx_jwt}; path=/; SameSite=lax';
+      console.log('🔐 Client-side cookie set: mx_jwt');
+    </script>`;
+          }
+        }
+
+        // Inject scripts
         response = response.replace('</head>', `
-    <script src="/contentScript.bundle.js"></script>
+    <script src="/contentScript.bundle.js"></script>${cookieScript}
     </head>`);
 
         // Modify CSP header safely
