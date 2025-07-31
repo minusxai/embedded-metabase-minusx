@@ -1,4 +1,15 @@
-iv[aria-label="mx-logos"] {
+:root {
+    --chakra-colors-minusxBW-200: #ffffff;
+    --chakra-colors-minusxBW-300: #f5f8fa;
+    --chakra-colors-minusxGreen-400: #36b374;
+    --chakra-colors-minusxGreen-500: #36b374;
+    --chakra-colors-minusxGreen-600: #36b374;
+    --chakra-colors-minusxGreen-700: #36b374;
+    --chakra-colors-minusxGreen-800: #36b374;
+    --chakra-colors-chakra-border-color: #e3e9ed;
+}
+
+[aria-label="mx-logos"] {
     opacity: 0;
     height: 0;
 }
@@ -64,20 +75,58 @@ img[alt="MinusX"] {
     display: none;
 }
 
-[aria-label="assistant-message"] {
+[aria-label="message-arrow"] {
+    display: none;
+}
+
+[aria-label="assistant-message-bubble"] {
     background: white;
     padding: 0px;
     color: #000000;
 }
+[aria-label="assistant-message-bubble"] hr {
+    margin-top: 12px !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+[aria-label="assistant-message-bubble"] a {
+    color: #2c915e !important;
+}
 
 
-:root {
-    --chakra-colors-minusxBW-200: #ffffff;
-    --chakra-colors-minusxBW-300: #f5f8fa;
-    --chakra-colors-minusxGreen-400: #36b374;
-    --chakra-colors-minusxGreen-500: #36b374;
-    --chakra-colors-minusxGreen-600: #36b374;
-    --chakra-colors-minusxGreen-700: #36b374;
-    --chakra-colors-minusxGreen-800: #36b374;
-    --chakra-colors-chakra-border-color: #e3e9ed;
+[aria-label="planning-bubble"] {
+    color: #6A7278;
+    background: #ffffff;
+    border: #B4BDC2 1px solid;
+}
+
+[aria-label="planning-spinner"] {
+    color: #6A7278;
+}
+
+[aria-label="thinking-block-container"] {
+    background: #ffffff;
+    border: #B4BDC2 1px solid;
+    color: #6A7278;
+}
+
+
+[aria-label="thinking-content"] {
+    border: none;
+    margin-bottom: 12px;
+}
+
+[aria-label="thinking-header"] {
+    border: none;
+    margin-bottom: 12px;
+}
+
+[aria-label="mx-badge"] {
+    background: #E3E9ED;
+    color: #6A7278;
+}
+[aria-label="card-link"] {
+    background: #E3E9ED;
+    color: #6A7278;
 }
