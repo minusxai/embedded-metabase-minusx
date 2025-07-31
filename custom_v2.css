@@ -1,4 +1,15 @@
-iv[aria-label="mx-logos"] {
+:root {
+    --chakra-colors-minusxBW-200: #ffffff;
+    --chakra-colors-minusxBW-300: #f5f8fa;
+    --chakra-colors-minusxGreen-400: #36b374;
+    --chakra-colors-minusxGreen-500: #36b374;
+    --chakra-colors-minusxGreen-600: #36b374;
+    --chakra-colors-minusxGreen-700: #36b374;
+    --chakra-colors-minusxGreen-800: #36b374;
+    --chakra-colors-chakra-border-color: #e3e9ed;
+}
+
+[aria-label="mx-logos"] {
     opacity: 0;
     height: 0;
 }
@@ -52,61 +63,70 @@ img[alt="MinusX"] {
     background: white;
 }
 
-/* Color System Mapping: MinusX → Cashboard */
+[aria-label="login-highlights"] {
+    display: none;
+}
 
-/* MinusX Green System → Cashboard Green */
-*[style*="#1abc9c"] { color: #36B374 !important; }
-*[style*="background-color: #1abc9c"] { background-color: #36B374 !important; }
-*[style*="border-color: #1abc9c"] { border-color: #36B374 !important; }
+[aria-label="login-form"] {
+    display: none;
+}
 
-*[style*="#16a085"] { color: #36B374 !important; }
-*[style*="background-color: #16a085"] { background-color: #36B374 !important; }
-*[style*="border-color: #16a085"] { border-color: #36B374 !important; }
+[aria-label="suggestions"] {
+    display: none;
+}
 
-*[style*="#14A085"] { color: #36B374 !important; }
-*[style*="background-color: #14A085"] { background-color: #36B374 !important; }
-*[style*="border-color: #14A085"] { border-color: #36B374 !important; }
+[aria-label="message-arrow"] {
+    display: none;
+}
 
-/* MinusX BW System → Cashboard BG System */
-/* minusxBW.50, minusxBW.100 (#fafaf9) → Cashboard BG2 */
-*[style*="#fafaf9"] { color: #F5F8FA !important; }
-*[style*="background-color: #fafaf9"] { background-color: #F5F8FA !important; }
-*[style*="border-color: #fafaf9"] { border-color: #F5F8FA !important; }
+[aria-label="assistant-message-bubble"] {
+    background: white;
+    padding: 0px;
+    color: #000000;
+}
+[aria-label="assistant-message-bubble"] hr {
+    margin-top: 12px !important;
+    color: #ffffff !important;
+    border: none !important;
+}
 
-/* minusxBW.200 (#f5f5f4) → Cashboard BG2 */
-*[style*="#f5f5f4"] { color: #F5F8FA !important; }
-*[style*="background-color: #f5f5f4"] { background-color: #F5F8FA !important; }
-*[style*="border-color: #f5f5f4"] { border-color: #F5F8FA !important; }
+[aria-label="assistant-message-bubble"] a {
+    color: #2c915e !important;
+}
 
-*[style*="#F5F5F4"] { color: #F5F8FA !important; }
-*[style*="background-color: #F5F5F4"] { background-color: #F5F8FA !important; }
-*[style*="border-color: #F5F5F4"] { border-color: #F5F8FA !important; }
 
-/* minusxBW.300 (#e7e5e4) → Cashboard BG3 */
-*[style*="#e7e5e4"] { color: #E3E9ED !important; }
-*[style*="background-color: #e7e5e4"] { background-color: #E3E9ED !important; }
-*[style*="border-color: #e7e5e4"] { border-color: #E3E9ED !important; }
+[aria-label="planning-bubble"] {
+    color: #6A7278;
+    background: #ffffff;
+    border: #B4BDC2 1px solid;
+}
 
-*[style*="#E7E5E4"] { color: #E3E9ED !important; }
-*[style*="background-color: #E7E5E4"] { background-color: #E3E9ED !important; }
-*[style*="border-color: #E7E5E4"] { border-color: #E3E9ED !important; }
+[aria-label="planning-spinner"] {
+    color: #6A7278;
+}
 
-/* minusxBW.400, minusxBW.500 (#d6d3d1) → Cashboard BG3 */
-*[style*="#d6d3d1"] { color: #E3E9ED !important; }
-*[style*="background-color: #d6d3d1"] { background-color: #E3E9ED !important; }
-*[style*="border-color: #d6d3d1"] { border-color: #E3E9ED !important; }
+[aria-label="thinking-block-container"] {
+    background: #ffffff;
+    border: #B4BDC2 1px solid;
+    color: #6A7278;
+}
 
-/* minusxBW.600, minusxBW.700 (#44403c) → Keep as text color */
-*[style*="#44403c"] { color: #44403c !important; }
-*[style*="background-color: #44403c"] { background-color: #44403c !important; }
-*[style*="border-color: #44403c"] { border-color: #44403c !important; }
 
-/* minusxBW.800 (#292524) → Keep as dark text */
-*[style*="#292524"] { color: #292524 !important; }
-*[style*="background-color: #292524"] { background-color: #292524 !important; }
-*[style*="border-color: #292524"] { border-color: #292524 !important; }
+[aria-label="thinking-content"] {
+    border: none;
+    margin-bottom: 12px;
+}
 
-/* minusxBW.900 (#1c1917) → Keep as darkest text */
-*[style*="#1c1917"] { color: #1c1917 !important; }
-*[style*="background-color: #1c1917"] { background-color: #1c1917 !important; }
-*[style*="border-color: #1c1917"] { border-color: #1c1917 !important; }
+[aria-label="thinking-header"] {
+    border: none;
+    margin-bottom: 12px;
+}
+
+[aria-label="mx-badge"] {
+    background: #E3E9ED;
+    color: #6A7278;
+}
+[aria-label="card-link"] {
+    background: #E3E9ED;
+    color: #6A7278;
+}
