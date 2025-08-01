@@ -84,8 +84,8 @@ app.use('/', createProxyMiddleware({
           if (csp.includes('frame-src')) {
             csp = csp.replace(/frame-src\s+([^;]+)/, (match, value) => {
               const sources = value.trim().split(/\s+/);
-              if (!sources.includes('https://web.minusxapi.com')) {
-                sources.push('https://web.minusxapi.com');
+              if (!sources.includes('https://*.minusxapi.com')) {
+                sources.push('https://*.minusxapi.com');
               }
               if (MX_DEV_MODE && !sources.includes('http://localhost:3005')) {
                 sources.push('http://localhost:3005');
@@ -94,10 +94,23 @@ app.use('/', createProxyMiddleware({
             });
           } else {
             if (MX_DEV_MODE) {
-              csp += `; frame-src https://web.minusxapi.com http://localhost:3005`;
+              csp += `; frame-src https://*.minusxapi.com http://localhost:3005`;
             } else {
-              csp += `; frame-src https://web.minusxapi.com`;
+              csp += `; frame-src https://*.minusxapi.com`;
             }
+          }
+
+          // Handle connect-src CSP modification
+          if (csp.includes('connect-src')) {
+            csp = csp.replace(/connect-src\s+([^;]+)/, (match, value) => {
+              const sources = value.trim().split(/\s+/);
+              if (!sources.includes('https://*.minusxapi.com')) {
+                sources.push('https://*.minusxapi.com');
+              }
+              return `connect-src ${sources.join(' ')}`;
+            });
+          } else {
+            csp += `; connect-src https://*.minusxapi.com`;
           }
 
           // 🔥 Important: apply to final response
