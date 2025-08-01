@@ -61,7 +61,8 @@ const signUserToken = (user) =>
 const signMXToken = (username) =>
   jwt.sign(
     {
-      username,
+    //   username, // username is supported as well
+      email: `${username}@domain.com`, // OR email should be provided
       exp: Math.round(Date.now() / 1000) + 60 * 10, // 10 minute expiration
     },
     MX_JWT_SHARED_SECRET
