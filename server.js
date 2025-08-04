@@ -75,11 +75,17 @@ app.get("/", function (req, res) {
 });
 
 app.get("/analytics", function (req, res) {
-    res.send(generateDashboardPage(req, METABASE_DASHBOARD_PATH, 'dashboard'));
+    res.send(generatePage(req, METABASE_DASHBOARD_PATH, 'dashboard'));
 });
 
 app.get("/editor", function (req, res) {
-    res.send(generateDashboardPage(req, METABASE_EDITOR_PATH, 'editor'));
+    res.send(generatePage(req, METABASE_EDITOR_PATH, 'editor'));
+});
+
+app.get("/question", function (req, res) {
+    const hash = req.query.hash || "";
+    const directUrl = `${METABASE_SITE_URL}/question#${hash}`;
+    res.send(generatePage(req, directUrl, 'question', true));
 });
 
 // SSO route for Metabase authentication
@@ -100,8 +106,8 @@ app.get('/sso/metabase', (req, res) => {
 });
 
 
-const generateDashboardPage = (req, embedPath, activeMenuItem) => {
-    const iframeUrl = `/sso/metabase?return_to=${embedPath}`;
+const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
+    const iframeUrl = isDirectUrl ? urlOrPath : `/sso/metabase?return_to=${urlOrPath}`;
     return `<!DOCTYPE html>
 <html lang="en">
     <head>

@@ -1,10 +1,12 @@
 require('dotenv').config();
 const express = require('express');
 const { createProxyMiddleware, responseInterceptor } = require('http-proxy-middleware');
+const cors = require('cors');
 const path = require('path');
 
 const app = express();
 app.set('trust proxy', 1);
+const EMBED_HOST = process.env.EMBED_HOST || 'http://localhost:9090';
 const TARGET = process.env.TARGET || 'https://minusx.metabaseapp.com';
 const EXTENSION_TARGET = process.env.EXTENSION_TARGET || 'https://web.minusxapi.com/extension-build';
 const MX_DEV_MODE = process.env.NODE_ENV === 'MX_DEV';
@@ -35,6 +37,14 @@ if (MX_DEV_MODE) {
     }));
   }
 }
+
+// Serve custom configs for /minusx.json requests
+app.get('/minusx.json', cors(), (req, res) => {
+  // Returns {}
+  res.json({
+    "embed_host": EMBED_HOST
+  });
+});
 
 // Serve custom.css for /minusx.css requests
 app.get('/minusx.css', (req, res) => {
