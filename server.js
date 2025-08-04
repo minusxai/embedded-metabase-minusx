@@ -83,7 +83,7 @@ app.get("/editor", function (req, res) {
 });
 
 app.get("/question", function (req, res) {
-    const hash = req.query.hash || "";
+    const hash = decodeURIComponent(req.query.hash || "");
     const directUrl = `${METABASE_SITE_URL}/question#${hash}`;
     res.send(generatePage(req, directUrl, 'question', true));
 });
