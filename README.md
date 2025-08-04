@@ -37,6 +37,7 @@ METABASE_EDITOR_PATH=your_editor_path #Example: /question/139-demo-mbql/notebook
 # Proxy Configuration
 TARGET=https://your-metabase-instance.com
 EXTENSION_TARGET=https://web.minusxapi.com/extension-build
+EMBED_HOST=http://localhost:9090
 ```
 
 **Note**: The `MX_JWT_SHARED_SECRET` is required for MinusX authentication. [Contact us](http://minusx.ai/demo) to discuss embedded plans and retrieve this shared JWT token.
@@ -88,6 +89,16 @@ npm run proxy-mxdev
 ```
 
 Visit [http://localhost:9090](http://localhost:9090)
+
+## API Endpoints
+
+The application provides the following endpoints:
+
+- **`/analytics`** - Main dashboard view (embeds the configured dashboard path)
+- **`/editor`** - Question builder interface (embeds the configured editor path)  
+- **`/question?hash=<hash>`** - Direct question viewer (loads `/question#<hash>` from Metabase without authentication)
+
+Example: `http://localhost:9090/question?hash=abc123` will load `http://localhost:9091/question#abc123`
 
 ## Architecture
 
