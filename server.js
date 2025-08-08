@@ -82,9 +82,19 @@ app.get("/editor", function (req, res) {
     res.send(generatePage(req, METABASE_EDITOR_PATH, 'editor'));
 });
 
-app.get("/question", function (req, res) {
+app.get("/question/:id?", function (req, res) {
+    const questionId = req.params.id;
     const hash = decodeURIComponent(req.query.hash || "");
-    const directUrl = `${METABASE_SITE_URL}/question#${hash}`;
+    
+    let directUrl;
+    if (questionId && questionId.trim()) {
+        directUrl = `${METABASE_SITE_URL}/question/${questionId}`;
+    } else if (hash) {
+        directUrl = `${METABASE_SITE_URL}/question#${hash}`;
+    } else {
+        directUrl = `${METABASE_SITE_URL}/question`;
+    }
+    
     res.send(generatePage(req, directUrl, 'question', true));
 });
 
