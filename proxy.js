@@ -63,6 +63,9 @@ app.get('/logo_x.svg', (req, res) => {
 app.use('/', (req, res, next) => {
   const contentType = req.headers.accept || '';
   const isStaticAsset = req.url.endsWith('.js') || req.url.endsWith('.css') ||
+    req.url.endsWith('.js.map') || req.url.endsWith('.css.map') ||
+    req.url.endsWith('.woff') || req.url.endsWith('.woff2') || 
+    req.url.endsWith('.ttf') || req.url.endsWith('.eot') ||
     contentType.includes('text/css') || contentType.includes('application/javascript');
   
   if (isStaticAsset && assetCache.has(req.url)) {
@@ -87,13 +90,22 @@ app.use('/', createProxyMiddleware({
   on: {
    proxyRes: responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
       const contentType = proxyRes.headers['content-type'] || '';
+      console.log('Content type for url', req.url, 'is', contentType)
       
       // Cache static assets in memory
       const isStaticAsset = contentType.includes('application/javascript') || 
         contentType.includes('text/javascript') || 
         contentType.includes('text/css') ||
+        contentType.includes('application/json') ||
+        contentType.startsWith('font/') ||
         req.url.endsWith('.js') || 
-        req.url.endsWith('.css');
+        req.url.endsWith('.css') ||
+        req.url.endsWith('.js.map') ||
+        req.url.endsWith('.css.map') ||
+        req.url.endsWith('.woff') || 
+        req.url.endsWith('.woff2') || 
+        req.url.endsWith('.ttf') || 
+        req.url.endsWith('.eot');
         
       if (isStaticAsset) {
         console.log('💾 Caching asset:', req.url);
