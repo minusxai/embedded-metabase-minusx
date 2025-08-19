@@ -4,6 +4,9 @@ const { createProxyMiddleware, responseInterceptor } = require('http-proxy-middl
 const cors = require('cors');
 const path = require('path');
 
+// In-memory cache for static assets
+const assetCache = new Map();
+
 const app = express();
 app.set('trust proxy', 1);
 const EMBED_HOST = process.env.EMBED_HOST || 'http://localhost:9090';
@@ -56,12 +59,55 @@ app.get('/logo_x.svg', (req, res) => {
   res.sendFile(__dirname + '/temp_logo.svg');
 });
 
+// Check cache first for static assets
+app.use('/', (req, res, next) => {
+  const contentType = req.headers.accept || '';
+  const isStaticAsset = req.url.endsWith('.js') || req.url.endsWith('.css') ||
+    contentType.includes('text/css') || contentType.includes('application/javascript');
+  
+  if (isStaticAsset && assetCache.has(req.url)) {
+    const cached = assetCache.get(req.url);
+    console.log('📦 Serving from cache:', req.url);
+    
+    // Set browser cache headers
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.setHeader('Expires', new Date(Date.now() + 3600000).toUTCString());
+    res.setHeader('Content-Type', cached.contentType);
+    
+    return res.send(cached.data);
+  }
+  
+  next();
+});
+
 app.use('/', createProxyMiddleware({
   target: TARGET,
   changeOrigin: true,
   selfHandleResponse: true,
   on: {
    proxyRes: responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
+      const contentType = proxyRes.headers['content-type'] || '';
+      
+      // Cache static assets in memory
+      const isStaticAsset = contentType.includes('application/javascript') || 
+        contentType.includes('text/javascript') || 
+        contentType.includes('text/css') ||
+        req.url.endsWith('.js') || 
+        req.url.endsWith('.css');
+        
+      if (isStaticAsset) {
+        console.log('💾 Caching asset:', req.url);
+        assetCache.set(req.url, {
+          data: responseBuffer,
+          contentType: contentType,
+          timestamp: Date.now()
+        });
+        
+        // Set browser cache headers
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+        res.setHeader('Expires', new Date(Date.now() + 3600000).toUTCString());
+      }
+
       // Handle JWT cookie setting for /auth/sso requests
       if (req.url.startsWith('/auth/sso')) {
         const mx_jwt = req.query.mx_jwt;
@@ -74,8 +120,6 @@ app.use('/', createProxyMiddleware({
           });
         }
       }
-
-      const contentType = proxyRes.headers['content-type'] || '';
 
       if (contentType.includes('text/html')) {
         console.log('🔧 Intercepting HTML response', req.url);
