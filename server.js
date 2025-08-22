@@ -10,7 +10,7 @@ const METABASE_JWT_SHARED_SECRET = process.env.METABASE_JWT_SHARED_SECRET;
 const MX_JWT_SHARED_SECRET = process.env.MX_JWT_SHARED_SECRET;
 const METABASE_DASHBOARD_PATH = process.env.METABASE_DASHBOARD_PATH || "/dashboard/1-e-commerce-insights";
 const METABASE_EDITOR_PATH = process.env.METABASE_EDITOR_PATH || "/question/139-demo-mbql/notebook";
-const mods = "top_nav=false";
+const mods = "header=false&action_buttons=false&top_nav=false&side_nav=false";
 
 var app = (module.exports = express());
 

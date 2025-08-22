@@ -83,6 +83,15 @@ app.use('/', (req, res, next) => {
   next();
 });
 
+// Reject PUT and DELETE requests to /api/dashboard/:id with 403
+app.put('/api/dashboard/:id', (req, res) => {
+  res.status(403).json({ error: 'Dashboard updates are not allowed' });
+});
+
+app.delete('/api/dashboard/:id', (req, res) => {
+  res.status(403).json({ error: 'Dashboard deletion is not allowed' });
+});
+
 app.use('/', createProxyMiddleware({
   target: TARGET,
   changeOrigin: true,
