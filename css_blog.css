@@ -1,0 +1,125 @@
+/* [aria-label="mx-logos"] {
+    opacity: 0;
+    height: 0;
+} */
+
+body, * {
+    font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+[aria-label*="message-bubble"] {
+    font-family: 'Inter', sans-serif !important;
+}
+
+[aria-label="thinking-content"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* [aria-label="welcome-message"] {
+    display: none;
+} */
+
+[aria-label="settings-toggle"] {
+    display: none;
+}
+
+/* img[alt="MinusX"] {
+    display: none;
+} */
+
+/* [aria-label="chat-container"] {
+    background: white;
+} */
+
+[aria-label="quick-actions"] {
+    display: none;
+}
+
+[aria-label="context-info"] {
+    display: none;
+}
+
+[aria-label="mx-mode"] {
+    display: none;
+}
+
+[aria-label="mx-agent-selector"] {
+    display: none;
+}
+
+/* [aria-label="tasks-panel-content"] {
+    background: white;
+    border: 1px solid #B4BDC2 !important;
+}
+
+[aria-label="tasks-tree"] {
+    background: white;
+} */
+
+[aria-label="login-highlights"] {
+    display: none;
+}
+
+[aria-label="login-form"] {
+    display: none;
+}
+
+/* [aria-label="suggestions"] {
+    display: none;
+} */
+
+[aria-label="message-arrow"] {
+    display: none;
+}
+
+/* [aria-label="assistant-message-bubble"] {
+    background: white;
+    padding: 0px;
+    color: #000000;
+}
+[aria-label="assistant-message-bubble"] hr {
+    margin-top: 12px !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+[aria-label="assistant-message-bubble"] a {
+    color: #2c915e !important;
+} */
+
+
+/* [aria-label="planning-bubble"] {
+    color: #6A7278;
+    background: #ffffff;
+    border: #B4BDC2 1px solid;
+}
+
+[aria-label="planning-spinner"] {
+    color: #6A7278;
+}
+
+[aria-label="thinking-block-container"] {
+    background: #ffffff;
+    border: #B4BDC2 1px solid;
+    color: #6A7278;
+} */
+
+
+[aria-label="thinking-content"] {
+    border: none;
+    margin-bottom: 12px;
+}
+
+[aria-label="thinking-header"] {
+    border: none;
+    margin-bottom: 12px;
+}
+
+/* [aria-label="mx-badge"] {
+    background: #E3E9ED;
+    color: #6A7278;
+}
+[aria-label="card-link"] {
+    background: #E3E9ED;
+    color: #6A7278;
+} */

@@ -20,7 +20,7 @@ const MX_DEV_BUILD_PATH = '../minusx/extension/build';
 const rewriteUrls = [
   '/contentScript.bundle.js',
   '/content.styles.css',
-//   '/logo_x.svg',
+  '/logo_x.svg',
   '/metabase.bundle.js',
 ]
 
@@ -51,13 +51,13 @@ app.get('/minusx.json', cors(), (req, res) => {
 
 // Serve custom.css for /minusx.css requests
 app.get('/minusx.css', (req, res) => {
-  res.sendFile(__dirname + '/custom.css');
+  res.sendFile(__dirname + '/css_blog.css');
 });
 
 // Serve local logo instead of from EXTENSION_TARGET
-app.get('/logo_x.svg', (req, res) => {
-  res.sendFile(__dirname + '/temp_logo.svg');
-});
+// app.get('/logo_x.svg', (req, res) => {
+//   res.sendFile(__dirname + '/temp_logo.svg');
+// });
 
 // Check cache first for static assets
 app.use('/', (req, res, next) => {
