@@ -35,9 +35,9 @@ body, * {
     display: none;
 }
 
-[aria-label="context-info"] {
+/* [aria-label="context-info"] {
     display: none;
-}
+} */
 
 [aria-label="mx-mode"] {
     display: none;

@@ -15,6 +15,7 @@ const mods = "header=false&action_buttons=false&top_nav=false&side_nav=false";
 var app = (module.exports = express());
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static('.'));
 
 // Configure session middleware
 app.use(session({
@@ -32,14 +33,7 @@ const users = [
     email: 'rene2@minusx.ai',
     accountId: 28,
     accountName: 'Customer-Acme',
-  },
-  {
-    firstName: 'Cecilia',
-    lastName: 'Stark',
-    email: 'cecilia@example.com',
-    accountId: 132,
-    accountName: 'Customer-Fake',
-  },
+  }
 ];
 
 
@@ -123,7 +117,8 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Acme App</title>
+        <title>MinusX Embedded Analytics</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
         <style>
             * {
                 margin: 0;
@@ -132,38 +127,68 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             }
             
             body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-                background-color: #fefefe;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background-color: #ffffff;
                 height: 100vh;
                 overflow: hidden;
+                color: #1f2937;
             }
             
             .header {
-                background: linear-gradient(to right, #f8fafc, #f1f5f9);
+                background: #ffffff;
                 color: #1f2937;
-                padding: 1.25rem 2rem;
-                border-bottom: 1px solid #e2e8f0;
+                padding: 1.5rem 2.5rem;
+                border-bottom: 1px solid #f1f5f9;
                 position: relative;
                 z-index: 1000;
-                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .logo {
+                width: 32px;
+                height: 32px;
+                background: #1f2937;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 1rem;
+                color: white;
             }
             
             .header h1 {
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #1e293b;
-                letter-spacing: -0.025em;
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: #1f2937;
+                letter-spacing: -0.02em;
+            }
+            
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                font-size: 0.875rem;
+                color: #6b7280;
             }
             
             .container {
                 display: flex;
-                height: calc(100vh - 70px);
+                height: calc(100vh - 88px);
             }
             
             .sidebar {
-                width: 280px;
-                background: #ffffff;
-                border-right: 1px solid #e5e7eb;
+                width: 260px;
+                background: #fafafa;
+                border-right: 1px solid #f1f5f9;
                 display: flex;
                 flex-direction: column;
                 overflow-y: auto;
@@ -174,61 +199,69 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
                 padding: 2rem 0;
             }
             
-            .sidebar-header {
-                padding: 0 2rem 1.5rem;
-                border-bottom: 1px solid #f3f4f6;
-                margin-bottom: 1.5rem;
+            .nav-section {
+                margin-bottom: 2rem;
             }
             
-            .sidebar-header h3 {
-                color: #374151;
-                font-size: 1rem;
+            .nav-section h3 {
+                color: #9ca3af;
+                font-size: 0.75rem;
                 font-weight: 600;
                 text-transform: uppercase;
-                letter-spacing: 0.05em;
+                letter-spacing: 0.1em;
+                padding: 0 1.5rem;
+                margin-bottom: 0.75rem;
             }
             
             .menu-item {
                 display: flex;
                 align-items: center;
-                padding: 0.75rem 2rem;
+                padding: 0.75rem 1.5rem;
                 color: #6b7280;
                 text-decoration: none;
-                transition: all 0.15s ease;
+                transition: all 0.2s ease;
                 font-weight: 500;
+                font-size: 0.875rem;
             }
             
             .menu-item:hover {
-                background-color: #f9fafb;
-                color: #374151;
+                background-color: #ffffff;
+                color: #1f2937;
             }
             
             .menu-item.active {
-                background-color: #f3f4f6;
-                color: #111827;
-                border-right: 2px solid #d1d5db;
+                background-color: #ffffff;
+                color: #1f2937;
+                border-right: 2px solid #1f2937;
+                font-weight: 600;
             }
             
             .menu-item-icon {
-                width: 20px;
-                height: 20px;
-                margin-right: 12px;
-                opacity: 0.7;
+                width: 18px;
+                height: 18px;
+                margin-right: 0.75rem;
+                opacity: 0.6;
+            }
+            
+            .menu-item:hover .menu-item-icon,
+            .menu-item.active .menu-item-icon {
+                opacity: 1;
             }
             
             .main-content {
                 flex: 1;
                 padding: 2rem;
-                background-color: #f9fafb;
+                background-color: #ffffff;
                 overflow: hidden;
             }
             
             .dashboard-container {
                 background: #ffffff;
                 border-radius: 8px;
-                border: 1px solid #e5e7eb;
+                border: 1px solid #f1f5f9;
                 height: 100%;
                 overflow: hidden;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             }
             
             #metabase {
@@ -239,9 +272,9 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             }
             
             .user-info {
-                padding: 1.5rem 2rem;
-                border-top: 1px solid #f3f4f6;
-                background-color: #f9fafb;
+                padding: 1.5rem;
+                border-top: 1px solid #f1f5f9;
+                background-color: #ffffff;
                 margin-top: auto;
             }
             
@@ -253,66 +286,71 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             }
             
             .user-avatar {
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background-color: #d1d5db;
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+                background-color: #1f2937;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: #374151;
+                color: white;
                 font-weight: 600;
-                margin-right: 10px;
+                margin-right: 0.75rem;
                 font-size: 0.875rem;
             }
             
-            .logout-link {
-                color: #6b7280;
-                text-decoration: none;
-                font-size: 0.8rem;
-                margin-top: 0.5rem;
-                display: inline-block;
+            .user-name {
                 font-weight: 500;
+                color: #1f2937;
+                margin-bottom: 0.125rem;
             }
             
-            .logout-link:hover {
-                color: #374151;
-                text-decoration: underline;
+            .user-company {
+                font-size: 0.75rem;
+                color: #9ca3af;
             }
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>Acme App</h1>
+            <div class="header-left">
+                <img src="/temp_logo.svg" alt="Logo" style="height: 32px; width: auto;" />
+                <h1>MinusX Embedded Analytics</h1>
+            </div>
+            <div class="header-right">
+                <span>Enterprise Plan</span>
+            </div>
         </div>
         
         <div class="container">
             <div class="sidebar">
                 <div class="sidebar-content">
-                    
-                    <a href="/analytics" class="menu-item ${activeMenuItem === 'dashboard' ? 'active' : ''}">
-                        <svg class="menu-item-icon" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
-                        </svg>
-                        Dashboard
-                    </a>
-                    
-                    <a href="/editor" class="menu-item ${activeMenuItem === 'editor' ? 'active' : ''}">
-                        <svg class="menu-item-icon" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                        Question Builder
-                    </a>
+                    <div class="nav-section">
+                        <h3>Analytics</h3>
+                        <a href="/analytics" class="menu-item ${activeMenuItem === 'dashboard' ? 'active' : ''}">
+                            <svg class="menu-item-icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                        
+                        <a href="/editor" class="menu-item ${activeMenuItem === 'editor' ? 'active' : ''}">
+                            <svg class="menu-item-icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                            </svg>
+                            Query Builder
+                        </a>
+                    </div>
                 </div>
                 
                 <div class="user-info">
                     <div class="user-profile">
                         <div class="user-avatar">
-                            ${req.session && req.session.user ? req.session.user.firstName.charAt(0).toUpperCase() : 'R'}
+                            MX
                         </div>
                         <div>
-                            <div>${req.session && req.session.user ? req.session.user.firstName + ' ' + req.session.user.lastName : 'Rene Mueller'}</div>
-                            <div style="font-size: 0.75rem; opacity: 0.7;">${req.session && req.session.user ? req.session.user.accountName : 'Customer-Acme'}</div>
+                            <div class="user-name">MinusX User</div>
+                            <div class="user-company">Embedded Analytics</div>
                         </div>
                     </div>
                 </div>
