@@ -12,6 +12,45 @@ const METABASE_DASHBOARD_PATH = process.env.METABASE_DASHBOARD_PATH || "/dashboa
 const METABASE_EDITOR_PATH = process.env.METABASE_EDITOR_PATH || "/question/139-demo-mbql/notebook";
 const mods = "header=false&action_buttons=false&top_nav=false&side_nav=false";
 
+// Demo pages configuration
+const demoPages = [
+  {
+    name: 'Dashboard Q&A',
+    path: '/analytics',
+    route: 'dashboard',
+    iframePath: METABASE_DASHBOARD_PATH,
+    icon: 'bar-chart-2'
+  },
+  {
+    name: 'Question Builder',
+    path: '/editor',
+    route: 'editor',
+    iframePath: METABASE_EDITOR_PATH,
+    icon: 'edit-3'
+  },
+  {
+    name: 'New SQL Query',
+    path: '/sql-new',
+    route: 'sql-new',
+    iframePath: '/question',
+    icon: 'plus-circle'
+  },
+  {
+    name: 'Edit SQL Query',
+    path: '/sql-edit',
+    route: 'sql-edit',
+    iframePath: '/question',
+    icon: 'database'
+  },
+  {
+    name: 'Root Cause Analysis',
+    path: '/rca',
+    route: 'rca',
+    iframePath: '/question',
+    icon: 'search'
+  }
+];
+
 var app = (module.exports = express());
 
 app.use(express.urlencoded({ extended: false }));
@@ -76,6 +115,18 @@ app.get("/editor", function (req, res) {
     res.send(generatePage(req, METABASE_EDITOR_PATH, 'editor'));
 });
 
+app.get("/sql-new", function (req, res) {
+    res.send(generatePage(req, '/question', 'sql-new'));
+});
+
+app.get("/sql-edit", function (req, res) {
+    res.send(generatePage(req, '/question', 'sql-edit'));
+});
+
+app.get("/rca", function (req, res) {
+    res.send(generatePage(req, '/question', 'rca'));
+});
+
 app.get("/question/:id?", function (req, res) {
     const questionId = req.params.id;
     const hash = decodeURIComponent(req.query.hash || "");
@@ -117,8 +168,9 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MinusX Embedded Analytics</title>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <title>MinusX Embedded Demo</title>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <script src="https://unpkg.com/feather-icons"></script>
         <style>
             * {
                 margin: 0;
@@ -127,18 +179,18 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             }
             
             body {
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                background-color: #ffffff;
+                font-family: 'JetBrains Mono', monospace;
+                background-color: #0a0a0a;
                 height: 100vh;
                 overflow: hidden;
-                color: #1f2937;
+                color: #f5f5f5;
             }
             
             .header {
-                background: #ffffff;
-                color: #1f2937;
-                padding: 1.5rem 2.5rem;
-                border-bottom: 1px solid #f1f5f9;
+                background: #111111;
+                color: #f5f5f5;
+                padding: 1.25rem 2rem;
+                border-bottom: 1px solid #333333;
                 position: relative;
                 z-index: 1000;
                 display: flex;
@@ -155,21 +207,22 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             .logo {
                 width: 32px;
                 height: 32px;
-                background: #1f2937;
-                border-radius: 6px;
+                background: #00ff00;
+                border: 1px solid #00ff00;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-weight: 700;
-                font-size: 1rem;
-                color: white;
+                font-size: 0.875rem;
+                color: #000000;
             }
             
             .header h1 {
-                font-size: 1.25rem;
-                font-weight: 600;
-                color: #1f2937;
-                letter-spacing: -0.02em;
+                font-size: 1.125rem;
+                font-weight: 500;
+                color: #f5f5f5;
+                letter-spacing: 0.02em;
+                text-transform: uppercase;
             }
             
             .header-right {
@@ -177,7 +230,7 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
                 align-items: center;
                 gap: 1.5rem;
                 font-size: 0.875rem;
-                color: #6b7280;
+                color: #a0a0a0;
             }
             
             .container {
@@ -186,9 +239,9 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             }
             
             .sidebar {
-                width: 260px;
-                background: #fafafa;
-                border-right: 1px solid #f1f5f9;
+                width: 240px;
+                background: #0f0f0f;
+                border-right: 1px solid #333333;
                 display: flex;
                 flex-direction: column;
                 overflow-y: auto;
@@ -204,11 +257,11 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             }
             
             .nav-section h3 {
-                color: #9ca3af;
+                color: #00ff00;
                 font-size: 0.75rem;
                 font-weight: 600;
                 text-transform: uppercase;
-                letter-spacing: 0.1em;
+                letter-spacing: 0.15em;
                 padding: 0 1.5rem;
                 margin-bottom: 0.75rem;
             }
@@ -217,30 +270,33 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
                 display: flex;
                 align-items: center;
                 padding: 0.75rem 1.5rem;
-                color: #6b7280;
+                color: #a0a0a0;
                 text-decoration: none;
-                transition: all 0.2s ease;
-                font-weight: 500;
-                font-size: 0.875rem;
+                transition: all 0.15s ease;
+                font-weight: 400;
+                font-size: 0.8rem;
+                border-left: 2px solid transparent;
             }
             
             .menu-item:hover {
-                background-color: #ffffff;
-                color: #1f2937;
+                background-color: #1a1a1a;
+                color: #f5f5f5;
+                border-left: 2px solid #00ff00;
             }
             
             .menu-item.active {
-                background-color: #ffffff;
-                color: #1f2937;
-                border-right: 2px solid #1f2937;
+                background-color: #1a1a1a;
+                color: #00ff00;
+                border-left: 2px solid #00ff00;
                 font-weight: 600;
             }
             
             .menu-item-icon {
-                width: 18px;
-                height: 18px;
+                width: 16px;
+                height: 16px;
                 margin-right: 0.75rem;
                 opacity: 0.6;
+                stroke-width: 2;
             }
             
             .menu-item:hover .menu-item-icon,
@@ -250,75 +306,99 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             
             .main-content {
                 flex: 1;
-                padding: 2rem;
-                background-color: #ffffff;
+                padding: 1.5rem;
+                background-color: #0a0a0a;
                 overflow: hidden;
             }
             
             .dashboard-container {
-                background: #ffffff;
-                border-radius: 8px;
-                border: 1px solid #f1f5f9;
+                background: #111111;
+                border-radius: 4px;
+                border: 1px solid #333333;
                 height: 100%;
                 overflow: hidden;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
             }
             
             #metabase {
                 width: 100%;
                 height: 100%;
                 border: none;
-                border-radius: 8px;
+                border-radius: 4px;
+                filter: contrast(1.1) brightness(0.95);
             }
             
             .user-info {
-                padding: 1.5rem;
-                border-top: 1px solid #f1f5f9;
-                background-color: #ffffff;
+                padding: 1.25rem 1.5rem;
+                border-top: 1px solid #333333;
+                background-color: #0f0f0f;
                 margin-top: auto;
             }
             
             .user-profile {
                 display: flex;
                 align-items: center;
-                color: #6b7280;
-                font-size: 0.875rem;
+                color: #a0a0a0;
+                font-size: 0.8rem;
             }
             
             .user-avatar {
-                width: 36px;
-                height: 36px;
-                border-radius: 8px;
-                background-color: #1f2937;
+                width: 32px;
+                height: 32px;
+                border: 1px solid #00ff00;
+                background-color: #000000;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: white;
+                color: #00ff00;
                 font-weight: 600;
                 margin-right: 0.75rem;
-                font-size: 0.875rem;
+                font-size: 0.75rem;
             }
             
             .user-name {
                 font-weight: 500;
-                color: #1f2937;
+                color: #f5f5f5;
                 margin-bottom: 0.125rem;
             }
             
             .user-company {
-                font-size: 0.75rem;
-                color: #9ca3af;
+                font-size: 0.7rem;
+                color: #666666;
+            }
+            
+            .cta-button {
+                background: transparent;
+                color: #00ff00;
+                padding: 0.625rem 1.25rem;
+                border: 1px solid #00ff00;
+                border-radius: 2px;
+                font-size: 0.8rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                text-decoration: none;
+                display: inline-block;
+                font-family: 'JetBrains Mono', monospace;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            
+            .cta-button:hover {
+                background: #00ff00;
+                color: #000000;
+                box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
             }
         </style>
     </head>
     <body>
         <div class="header">
             <div class="header-left">
-                <img src="/temp_logo.svg" alt="Logo" style="height: 32px; width: auto;" />
-                <h1>MinusX Embedded Analytics</h1>
+                <img src="https://web.minusxapi.com/logo_x_light.svg" alt="Logo" style="height: 32px; width: auto;" />
+                <h1>MinusX Embedded Demo</h1>
             </div>
             <div class="header-right">
-                <span>Enterprise Plan</span>
+                <button class="cta-button" onclick="window.open('https://cal.com/vivek-aithal/minusx-embedded-demo', '_blank')">Add MinusX to Your App</button>
             </div>
         </div>
         
@@ -326,20 +406,12 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
             <div class="sidebar">
                 <div class="sidebar-content">
                     <div class="nav-section">
-                        <h3>Analytics</h3>
-                        <a href="/analytics" class="menu-item ${activeMenuItem === 'dashboard' ? 'active' : ''}">
-                            <svg class="menu-item-icon" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
-                            </svg>
-                            Dashboard
-                        </a>
-                        
-                        <a href="/editor" class="menu-item ${activeMenuItem === 'editor' ? 'active' : ''}">
-                            <svg class="menu-item-icon" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-                            </svg>
-                            Query Builder
-                        </a>
+                        <h3>Demo Pages</h3>
+                        ${demoPages.map(page => `
+                        <a href="${page.path}" class="menu-item ${activeMenuItem === page.route ? 'active' : ''}">
+                            <i data-feather="${page.icon}" class="menu-item-icon"></i>
+                            ${page.name}
+                        </a>`).join('')}
                     </div>
                 </div>
                 
@@ -362,6 +434,11 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
                 </div>
             </div>
         </div>
+        
+        <script>
+            // Initialize Feather icons
+            feather.replace();
+        </script>
     </body>
 </html>`;
 };
