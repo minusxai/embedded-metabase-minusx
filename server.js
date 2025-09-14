@@ -8,46 +8,35 @@ const jwt = require("jsonwebtoken");
 const METABASE_SITE_URL = process.env.PROXY_URL || "http://localhost:9091";
 const METABASE_JWT_SHARED_SECRET = process.env.METABASE_JWT_SHARED_SECRET;
 const MX_JWT_SHARED_SECRET = process.env.MX_JWT_SHARED_SECRET;
-const METABASE_DASHBOARD_PATH = process.env.METABASE_DASHBOARD_PATH || "/dashboard/1-e-commerce-insights";
-const METABASE_EDITOR_PATH = process.env.METABASE_EDITOR_PATH || "/question/139-demo-mbql/notebook";
+// const METABASE_DASHBOARD_PATH = process.env.METABASE_DASHBOARD_PATH || "/dashboard/1-e-commerce-insights";
+// const METABASE_EDITOR_PATH = process.env.METABASE_EDITOR_PATH || "/question/139-demo-mbql/notebook";
 const mods = "header=false&action_buttons=false&top_nav=false&side_nav=false";
 
 // Demo pages configuration
 const demoPages = [
   {
     name: 'Dashboard Q&A',
-    path: '/analytics',
-    route: 'dashboard',
-    iframePath: METABASE_DASHBOARD_PATH,
+    path: '/dashboard',
+    iframePath: '/dashboard/36-sales-overview',
     icon: 'bar-chart-2'
   },
   {
     name: 'Question Builder',
-    path: '/editor',
-    route: 'editor',
-    iframePath: METABASE_EDITOR_PATH,
+    path: '/mbql',
+    iframePath: '/question/139-demo-mbql',
     icon: 'edit-3'
-  },
-  {
-    name: 'New SQL Query',
-    path: '/sql-new',
-    route: 'sql-new',
-    iframePath: '/question',
-    icon: 'plus-circle'
   },
   {
     name: 'Edit SQL Query',
     path: '/sql-edit',
-    route: 'sql-edit',
-    iframePath: '/question',
+    iframePath: '/question/138-demo-sql',
     icon: 'database'
   },
   {
-    name: 'Root Cause Analysis',
-    path: '/rca',
-    route: 'rca',
-    iframePath: '/question',
-    icon: 'search'
+    name: 'New SQL Query',
+    path: '/sql-new',
+    iframePath: '/question#eyJkYXRhc2V0X3F1ZXJ5Ijp7ImRhdGFiYXNlIjoxLCJ0eXBlIjoibmF0aXZlIiwibmF0aXZlIjp7InF1ZXJ5IjoiIiwidGVtcGxhdGUtdGFncyI6e319fSwiZGlzcGxheSI6InRhYmxlIiwidmlzdWFsaXphdGlvbl9zZXR0aW5ncyI6e30sInR5cGUiOiJxdWVzdGlvbiJ9',
+    icon: 'plus-circle'
   }
 ];
 
@@ -104,27 +93,13 @@ const signMXToken = (username) =>
 
 
 app.get("/", function (req, res) {
-    res.redirect("/analytics");
+    res.redirect("/dashboard");
 });
 
-app.get("/analytics", function (req, res) {
-    res.send(generatePage(req, METABASE_DASHBOARD_PATH, 'dashboard'));
-});
-
-app.get("/editor", function (req, res) {
-    res.send(generatePage(req, METABASE_EDITOR_PATH, 'editor'));
-});
-
-app.get("/sql-new", function (req, res) {
-    res.send(generatePage(req, '/question', 'sql-new'));
-});
-
-app.get("/sql-edit", function (req, res) {
-    res.send(generatePage(req, '/question', 'sql-edit'));
-});
-
-app.get("/rca", function (req, res) {
-    res.send(generatePage(req, '/question', 'rca'));
+demoPages.forEach(page => {
+    app.get(page.path, function (req, res) {
+        res.send(generatePage(req, page.iframePath, page.path.replace('/', '')));
+    });
 });
 
 app.get("/question/:id?", function (req, res) {
@@ -408,7 +383,7 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
                     <div class="nav-section">
                         <h3>Demo Pages</h3>
                         ${demoPages.map(page => `
-                        <a href="${page.path}" class="menu-item ${activeMenuItem === page.route ? 'active' : ''}">
+                        <a href="${page.path}" class="menu-item ${activeMenuItem === page.path.replace('/', '') ? 'active' : ''}">
                             <i data-feather="${page.icon}" class="menu-item-icon"></i>
                             ${page.name}
                         </a>`).join('')}
