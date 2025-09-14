@@ -388,6 +388,22 @@ const generatePage = (req, urlOrPath, activeMenuItem, isDirectUrl = false) => {
                             ${page.name}
                         </a>`).join('')}
                     </div>
+                    
+                    <div class="nav-section">
+                        <h3>Additional Info</h3>
+                        <a href="#" onclick="window.open('https://minusx.ai/embedded-metabase-ai/', '_blank')" class="menu-item">
+                            <i data-feather="info" class="menu-item-icon"></i>
+                            Website
+                        </a>
+                        <a href="#" onclick="window.open('https://docs.minusx.ai/en/collections/10790008-minusx-in-metabase', '_blank')" class="menu-item">
+                            <i data-feather="book" class="menu-item-icon"></i>
+                            MinusX Docs
+                        </a>
+                        <a href="#" onclick="window.open('https://cal.com/vivek-aithal/minusx-embedded-demo', '_blank')" class="menu-item">
+                            <i data-feather="users" class="menu-item-icon"></i>
+                            Talk to CoFounders
+                        </a>
+                    </div>
                 </div>
                 
                 <div class="user-info">
