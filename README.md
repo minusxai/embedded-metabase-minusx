@@ -1,5 +1,7 @@
 ## Embedded Metabase + MinusX Example
 
+> **Live Demo**: [https://embed-demo.minusx.ai](https://embed-demo.minusx.ai)
+
 This repo demonstrates how to add MinusX support to an application that embeds Metabase dashboards and questions. The proxy server handles injecting the MinusX js and custom css into the Metabase iFrame. With that, MinusX just works exactly like it does in the browser extension.
 
 ![app.png](./imgs/app.png)
