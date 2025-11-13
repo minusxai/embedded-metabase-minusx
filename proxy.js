@@ -55,7 +55,7 @@ app.get('/minusx.json', cors(), (req, res) => {
 
 // Serve custom.css for /minusx.css requests
 app.get('/minusx.css', (req, res) => {
-  res.sendFile(__dirname + '/css_blog.css');
+  res.sendFile(__dirname + '/css_atlas.css');
 });
 
 // Serve local logo instead of from EXTENSION_TARGET
