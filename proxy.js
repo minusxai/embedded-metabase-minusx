@@ -100,6 +100,7 @@ app.delete('/api/dashboard/:id', (req, res) => {
 app.get('/auth/login', (req, res) => {
   const redirectUrl = req.query.redirect || '/';
   const authToken = req.query.auth_token || '';
+  const mxToken = req.query.mx_token || '';
   console.log('🔐 Serving auto-login page, will redirect to:', redirectUrl);
 
   res.send(`
@@ -158,7 +159,10 @@ app.get('/auth/login', (req, res) => {
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ auth_token: '${authToken}' })
+              body: JSON.stringify({
+                auth_token: '${authToken}',
+                mx_token: '${mxToken}'
+              })
             });
 
             if (response.ok) {
@@ -183,10 +187,20 @@ app.post('/api/session', express.json(), async (req, res) => {
   console.log('🔐 Intercepting /api/session, decoding auth_token...');
 
   try {
-    const { auth_token } = req.body;
+    const { auth_token, mx_token } = req.body;
 
     if (!auth_token) {
       return res.status(400).json({ error: 'Missing auth_token' });
+    }
+
+    // Set mx_jwt cookie if mx_token is provided
+    if (mx_token) {
+      console.log('🔐 Setting mx_jwt cookie');
+      res.cookie('mx_jwt', mx_token, {
+        httpOnly: false,
+        secure: true,
+        sameSite: 'None'
+      });
     }
 
     // Step 1: Decode outer JWT using AUTH_SECRET_TOKEN2
