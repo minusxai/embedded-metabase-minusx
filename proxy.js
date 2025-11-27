@@ -105,7 +105,6 @@ app.use('/', createProxyMiddleware({
       const isStaticAsset = contentType.includes('application/javascript') || 
         contentType.includes('text/javascript') || 
         contentType.includes('text/css') ||
-        contentType.includes('application/json') ||
         contentType.startsWith('font/') ||
         req.url.endsWith('.js') || 
         req.url.endsWith('.css') ||
