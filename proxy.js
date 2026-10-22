@@ -172,6 +172,24 @@ app.use('/', createProxyMiddleware({
             }
           }
 
+          // Metabase (v56+/cloud v1.64.3) ships a nonce-based style-src, which
+          // blocks the inline <style> tag the MinusX script injects (it can't
+          // know the nonce). Unstyled, MinusX's notification badges render as
+          // "12345678910" over the toggle and overflow the page horizontally.
+          // Strip the nonce and allow inline styles instead.
+          if (csp.includes('style-src')) {
+            csp = csp.replace(/style-src\s+([^;]+)/, (match, value) => {
+              const sources = value
+                .trim()
+                .split(/\s+/)
+                .filter((s) => !s.startsWith("'nonce-"));
+              if (!sources.includes("'unsafe-inline'")) {
+                sources.push("'unsafe-inline'");
+              }
+              return `style-src ${sources.join(' ')}`;
+            });
+          }
+
           // Handle connect-src CSP modification
           if (csp.includes('connect-src')) {
             csp = csp.replace(/connect-src\s+([^;]+)/, (match, value) => {
