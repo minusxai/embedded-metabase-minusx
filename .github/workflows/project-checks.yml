@@ -23,3 +23,7 @@ jobs:
       - run: npm ci
       - run: node --check server.js && node --check proxy.js
       - run: node test/http.cjs
+      - run: docker build --tag project-web-fixture .
+      - run: docker build --file Dockerfile.proxy --tag project-proxy-fixture .
+      - run: docker run --rm --entrypoint node project-web-fixture test/http.cjs
+      - run: docker run --rm --entrypoint node project-proxy-fixture test/http.cjs
