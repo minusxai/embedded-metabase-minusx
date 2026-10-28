@@ -1,10 +1,15 @@
-FROM node:18-alpine
+FROM node:22.23.4-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+
+COPY patch-npm.mjs /tmp/patch-npm.mjs
+RUN npm install --global --no-audit --no-fund npm@12.2.1 \
+    && node /tmp/patch-npm.mjs \
+    && npm cache clean --force
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --only=production
+RUN npm ci --omit=dev --no-audit --no-fund
 
 COPY . .
 
